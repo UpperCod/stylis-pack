@@ -6,7 +6,7 @@ export default {
     input: [
         "./src/load.js",
         "./src/utils/utils.js",
-        "./src/plugins/plugin-import.js",
+        "./src/plugins/plugin-import/plugin-import.js",
     ],
     output: [
         {
