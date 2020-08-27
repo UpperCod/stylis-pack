@@ -49,8 +49,10 @@
         ]
     },
     "exports": {
-        "import": "./esm",
-        "require": "./cjs"
+        "./": {
+            "import": "./ems/",
+            "require": "./cjs/"
+        }
     },
     "prettier": {
         "tabWidth": 4,

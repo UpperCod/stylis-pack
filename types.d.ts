@@ -13,6 +13,7 @@ interface RootContext {
 interface RootRoot {
     file: string;
     code: string;
+    css?: Element[];
     rootFile?: string;
     tree?: Context;
 }
@@ -25,7 +26,7 @@ declare module "stylis-pack" {
         root: Root,
         plugins: Plugin[],
         parallel?: object
-    ): Promise<Root & { css: Element[] }>;
+    ): Promise<Root>;
 }
 
 declare module "stylis-pack/plugin-import" {
