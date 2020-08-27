@@ -1,7 +1,7 @@
 {
-    "name": "pkg_name",
-    "version": "0.0.0",
-    "description": "Capture text fragments based on regular expressions that are executed for each line of the text",
+    "name": "stylis-pack",
+    "version": "1.0.0",
+    "description": "A layer add to Stylis for asynchronous processing",
     "main": "cjs.js",
     "module": "esm.js",
     "publishConfig": {
@@ -15,19 +15,27 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/UpperCod/pkg_name.git"
+        "url": "git+https://github.com/UpperCod/stylis-pack.git"
     },
     "author": "UpperCod",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/UpperCod/pkg_name/issues"
+        "url": "https://github.com/UpperCod/stylis-pack/issues"
     },
-    "homepage": "https://github.com/UpperCod/pkg_name#readme",
-    "dependencies": {},
+    "homepage": "https://github.com/UpperCod/stylis-pack#readme",
+    "dependencies": {
+        "@uppercod/cache": "^1.0.0",
+        "@uppercod/imported": "^1.0.1",
+        "@uppercod/request": "^1.0.1",
+        "postcss": "^7.0.32",
+        "postcss-js": "^2.0.3",
+        "stylis": "^4.0.2"
+    },
     "devDependencies": {
         "@rollup/plugin-node-resolve": "^8.1.0",
         "ava": "^3.10.1",
         "builtin-modules": "^3.1.0",
+        "bulma": "^0.9.0",
         "esm": "^3.2.25",
         "rollup": "^2.21.0"
     },
@@ -37,7 +45,7 @@
             "esm"
         ],
         "files": [
-            "test/**/*.test.js"
+            "src/**/*.test.js"
         ]
     },
     "exports": {

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+      "checkJs": true,
+      "jsx": "preserve"
+  },
+  "include": [
+      "src/**/*"
+  ]
+}
