@@ -4,8 +4,8 @@
 
 ## Submodules
 
-1. [stylis-pack/utils](./src/utils/README.md)
-2. [stylis-pack/plugin-import](./src/plugins/plugin-import/README.md)
+1. [stylis-pack/utils](./src/utils)
+2. [stylis-pack/plugin-import](./src/plugins/plugin-import)
 
 ## Install
 
