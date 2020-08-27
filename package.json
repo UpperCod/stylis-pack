@@ -2,8 +2,8 @@
     "name": "stylis-pack",
     "version": "1.0.0",
     "description": "A layer add to Stylis for asynchronous processing",
-    "main": "cjs.js",
-    "module": "esm.js",
+    "main": "./cjs/load.js",
+    "module": "./esm/load.js",
     "publishConfig": {
         "access": "public"
     },
@@ -49,8 +49,8 @@
         ]
     },
     "exports": {
-        "import": "./esm.js",
-        "require": "./cjs.js"
+        "import": "./esm",
+        "require": "./cjs"
     },
     "prettier": {
         "tabWidth": 4,
