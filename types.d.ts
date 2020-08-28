@@ -1,16 +1,13 @@
 import { Element } from "stylis";
 import { Context } from "@uppercod/imported";
 
-type RootPlugin = (
-    root: RootRoot,
-    context: RootContext
-) => Promise<void> | null;
+type _Plugin = (root: _Root, context: _Context) => Promise<void> | null;
 
-interface RootContext {
-    load(root: RootRoot): Promise<Element[]>;
+interface _Context {
+    load(root: _Root): Promise<Element[]>;
 }
 
-interface RootRoot {
+interface _Root {
     file: string;
     code: string;
     css?: Element[];
@@ -19,9 +16,9 @@ interface RootRoot {
 }
 
 declare module "stylis-pack" {
-    export type Root = RootRoot;
-    export type Context = RootContext;
-    export type Plugin = RootPlugin;
+    export type Root = _Root;
+    export type Context = _Context;
+    export type Plugin = _Plugin;
     export function load(
         root: Root,
         plugins: Plugin[],
@@ -33,7 +30,7 @@ declare module "stylis-pack/plugin-import" {
     export interface Options {
         readFile?: (src: string) => Promise<string>;
     }
-    export function pluginImport(options: Options): RootPlugin;
+    export function pluginImport(options: Options): _Plugin;
 }
 
 declare module "stylis-pack/utils" {
@@ -55,10 +52,10 @@ declare module "stylis-pack/utils" {
     export function walkAtRule(
         rules: Element[],
         type: string,
-        callback: (root: RootRoot) => Promise<void>
+        callback: (root: _Root) => Promise<void>
     );
     export function walk(
         rules: Element[],
-        callback: (root: RootRoot) => Promise<void>
+        callback: (root: _Root) => Promise<void>
     );
 }

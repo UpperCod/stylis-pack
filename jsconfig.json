@@ -4,6 +4,7 @@
       "jsx": "preserve"
   },
   "include": [
+      "*.d.ts",
       "src/**/*"
   ]
 }

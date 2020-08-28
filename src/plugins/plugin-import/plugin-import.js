@@ -2,11 +2,13 @@ import path from "path";
 import { readFile } from "fs/promises";
 import { request } from "@uppercod/request";
 import createCache from "@uppercod/cache";
-import { walkAtRule, replaceWith } from "../../utils/utils";
+import { compile } from "stylis";
+import { walkAtRule, walk, replaceWith } from "../../utils/utils";
 
 const cache = createCache();
 const isUrl = (file) => /^(http(s){0,1}:){0,1}\/\//.test(file);
 
+const baseAtMedia = compile(`@media{}`);
 /**
  *
  * @param {Object} [options]
@@ -21,11 +23,10 @@ export function pluginImport(options) {
     };
     /**@type {import("../load").plugin} */
     return async (root, { load }) => {
-        const context = {};
         const { dir } = path.parse(root.file);
         await walkAtRule(root.css, "@import", async (rule) => {
             const test = rule.value.match(
-                /@import\s+(?:"([^"]+)"|'([^']+)')([^;]*);/
+                /@import\s+(?:"([^"]+)"|'([^']+)')\s*([^;]*);/
             );
             if (test) {
                 const [, src1, src2, media = ""] = test;
@@ -41,10 +42,20 @@ export function pluginImport(options) {
                     );
                 }
 
-                const css = await load({
+                let css = await load({
                     file: src,
                     code,
                 });
+
+                if (media) {
+                    const value = `@media ${media}`;
+                    css = {
+                        ...baseAtMedia,
+                        children: css,
+                        props: [value],
+                        value,
+                    };
+                }
 
                 replaceWith(rule, css);
             }

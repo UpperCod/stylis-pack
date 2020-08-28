@@ -1,4 +1,5 @@
-@import "./c/c.css";
+@import "./c/c.css" (max-width: 520px);
+
 b {
     color: red;
 }
