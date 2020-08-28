@@ -1,8 +1,8 @@
-import createCache from '@uppercod/cache';
 import { walkAtRule, replaceWith } from './utils.js';
 import path from 'path';
 import { readFile } from 'fs/promises';
 import { request } from '@uppercod/request';
+import createCache from '@uppercod/cache';
 
 const cache = createCache();
 const isUrl = (file) => /^(http(s){0,1}:){0,1}\/\//.test(file);

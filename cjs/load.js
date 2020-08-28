@@ -2,16 +2,12 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var createCache = require('@uppercod/cache');
 var stylis = require('stylis');
 var createTree = require('@uppercod/imported');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var createCache__default = /*#__PURE__*/_interopDefaultLegacy(createCache);
 var createTree__default = /*#__PURE__*/_interopDefaultLegacy(createTree);
-
-const cache = createCache__default['default']();
 
 /**
  * Create a queue of plugins that access a root object,
@@ -42,7 +38,7 @@ function map(data, plugins, parallel) {
      * Root is only for local use to keep the mutations
      * associated with a root node.
      */
-    const [root] = cache(stylis.compile, `@root{${data.code}}`);
+    const [root] = stylis.compile(`@root{${data.code}}`);
     /**
      * Create root access to keep the mutation on the root,
      * This node is the only one without parent and root
@@ -96,14 +92,14 @@ function map(data, plugins, parallel) {
  * @typedef {Object} root
  * @property {string} file
  * @property {string} code
- * @property {css[]} [css]
+ * @property {css[]|string} [css]
  * @property {string} [rootFile]
  * @property {css} [root]
  * @property {import("@uppercod/imported").Context} [tree]
  */
 
 /**
- * @typedef {(root:root)=>Promise<css[]>} subLoad
+ * @typedef {(root:root)=>Promise<css[]|string>} subLoad
  */
 
 /**

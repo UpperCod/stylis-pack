@@ -2,16 +2,16 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var createCache = require('@uppercod/cache');
 var utils = require('./utils.js');
 var path = require('path');
 var promises = require('fs/promises');
 var request = require('@uppercod/request');
+var createCache = require('@uppercod/cache');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var createCache__default = /*#__PURE__*/_interopDefaultLegacy(createCache);
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
+var createCache__default = /*#__PURE__*/_interopDefaultLegacy(createCache);
 
 const cache = createCache__default['default']();
 const isUrl = (file) => /^(http(s){0,1}:){0,1}\/\//.test(file);

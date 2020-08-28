@@ -1,6 +1,6 @@
 {
     "name": "stylis-pack",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "A layer add to Stylis for asynchronous processing",
     "main": "./cjs/load.js",
     "module": "./esm/load.js",
@@ -25,10 +25,8 @@
     "homepage": "https://github.com/UpperCod/stylis-pack#readme",
     "dependencies": {
         "@uppercod/cache": "^1.0.0",
-        "@uppercod/imported": "^1.0.1",
+        "@uppercod/imported": "^1.1.1",
         "@uppercod/request": "^1.0.1",
-        "postcss": "^7.0.32",
-        "postcss-js": "^2.0.3",
         "stylis": "^4.0.2"
     },
     "devDependencies": {
