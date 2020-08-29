@@ -27,6 +27,7 @@
         "@uppercod/cache": "^1.0.0",
         "@uppercod/imported": "^1.1.1",
         "@uppercod/request": "^1.0.1",
+        "resolve-css": "^1.0.2",
         "stylis": "^4.0.2"
     },
     "devDependencies": {

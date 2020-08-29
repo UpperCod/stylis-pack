@@ -1,9 +1,10 @@
 import path from "path";
 import { readFile } from "fs/promises";
+import resolveCss from "resolve-css";
 import { request } from "@uppercod/request";
 import createCache from "@uppercod/cache";
 import { compile } from "stylis";
-import { walkAtRule, walk, replaceWith } from "../../utils/utils";
+import { walkAtRule, replaceWith } from "../../utils/utils";
 
 const cache = createCache();
 const isUrl = (file) => /^(http(s){0,1}:){0,1}\/\//.test(file);
@@ -35,11 +36,7 @@ export function pluginImport(options) {
                 if (isUrl(src)) {
                     [src, code] = await cache(request, src);
                 } else {
-                    [src, code] = await localResolve(
-                        options.readFile,
-                        dir,
-                        src
-                    );
+                    [src, code] = await resolveCss(options.readFile, src, dir);
                 }
 
                 let css = await load({
@@ -51,6 +48,7 @@ export function pluginImport(options) {
                     const value = `@media ${media}`;
                     css = {
                         ...baseAtMedia,
+                        //@ts-ignore
                         children: css,
                         props: [value],
                         value,
@@ -61,38 +59,4 @@ export function pluginImport(options) {
             }
         });
     };
-}
-/**
- *
- * @param {(src:string)=>Promise<string>} readFile
- * @param {string} dir
- * @param {string} src
- */
-async function localResolve(readFile, dir, src) {
-    try {
-        src = path.join(dir, src);
-        return [src, await readFile(src)];
-    } catch (e) {
-        const test = src.match(/(?:(@\w+\/[^\/]+)|([^\/]+))(.*)/);
-
-        if (test) {
-            const [, name1, name2, folder] = test;
-
-            let md;
-            try {
-                md = require.resolve(src);
-            } catch (e) {
-                md = require.resolve(name1 || name2);
-            }
-
-            const { dir, ext, base } = path.parse(md);
-
-            const nextSrc = path.join(
-                dir,
-                ext == ".css" ? base : folder.endsWith(".css") ? folder : base
-            );
-
-            return [nextSrc, await readFile(nextSrc)];
-        }
-    }
 }
