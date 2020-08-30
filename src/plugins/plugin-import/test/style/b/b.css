@@ -1,5 +1,6 @@
-@import "./c/c.css" (max-width: 520px);
+@import "./c/c.css" (as: c);
 
-b {
+.b {
+    @use c.c;
     color: red;
 }

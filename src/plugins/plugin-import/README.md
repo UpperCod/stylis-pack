@@ -22,3 +22,13 @@ const { css } = await load(
 
 serialize(css, stringify);
 ```
+
+## special rules
+
+```scss
+@import "./my.css" (as: T);
+
+.button {
+    @use T.button T.round T.background;
+}
+```

@@ -4,7 +4,7 @@ import resolveCss from "resolve-css";
 import { request } from "@uppercod/request";
 import createCache from "@uppercod/cache";
 import { compile } from "stylis";
-import { walkAtRule, replaceWith } from "../../utils/utils";
+import { walkAtRule, walk, replaceWith } from "../../utils/utils";
 
 const cache = createCache();
 const isUrl = (file) => /^(http(s){0,1}:){0,1}\/\//.test(file);
@@ -25,6 +25,7 @@ export function pluginImport(options) {
     /**@type {import("../load").plugin} */
     return async (root, { load }) => {
         const { dir } = path.parse(root.file);
+        const alias = {};
         await walkAtRule(root.css, "@import", async (rule) => {
             const test = rule.value.match(
                 /@import\s+(?:"([^"]+)"|'([^']+)')\s*([^;]*);/
@@ -45,18 +46,53 @@ export function pluginImport(options) {
                 });
 
                 if (media) {
-                    const value = `@media ${media}`;
-                    css = {
-                        ...baseAtMedia,
+                    const testAlias = media.match(/(?:as\s*:\s*(\w+)\s*)/);
+
+                    if (testAlias) {
+                        const [, space] = testAlias;
+
                         //@ts-ignore
-                        children: css,
-                        props: [value],
-                        value,
-                    };
+                        css.forEach(({ type, props, children }) => {
+                            if (type == "rule") {
+                                props.map((selector) => {
+                                    if (selector.startsWith(".")) {
+                                        const id = space + selector;
+                                        alias[id] = (alias[id] || []).concat(
+                                            children
+                                        );
+                                    }
+                                });
+                            }
+                        });
+                        css = [];
+                    } else {
+                        const value = `@media ${media}`;
+                        css = {
+                            ...baseAtMedia,
+                            //@ts-ignore
+                            children: css,
+                            props: [value],
+                            value,
+                        };
+                    }
                 }
 
                 replaceWith(rule, css);
             }
         });
+
+        if (Object.keys(alias).length) {
+            await walkAtRule(root.css, "@use", (atrule) => {
+                const { parent } = atrule;
+                atrule.value
+                    .replace(/@use\s*(.+)\s*;/, "$1")
+                    .split(/\s+/)
+                    .map((id) => {
+                        if (alias[id]) {
+                            parent.children = alias[id].concat(parent.children);
+                        }
+                    });
+            });
+        }
     };
 }

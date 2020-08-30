@@ -16,6 +16,6 @@ test("pluginImport", async (t) => {
     );
     t.is(
         serialize(data.css, stringify),
-        `@media (max-width: 520px){c{color:red;}}b{color:red;}a{color:red;}`
+        `@media (max-width: 520px){.b{color:red;color:red;}}.a{color:red;}`
     );
 });
