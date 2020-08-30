@@ -4,7 +4,7 @@ import resolveCss from "resolve-css";
 import { request } from "@uppercod/request";
 import createCache from "@uppercod/cache";
 import { compile } from "stylis";
-import { walkAtRule, walk, replaceWith } from "../../utils/utils";
+import { walkAtRule, replaceWith } from "../../utils/utils";
 
 const cache = createCache();
 const isUrl = (file) => /^(http(s){0,1}:){0,1}\/\//.test(file);

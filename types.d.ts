@@ -30,29 +30,33 @@ interface _Root {
     tree?: _Tree;
 }
 
-interface _Context {
+interface _PluginContext {
     addChild(src: string): void;
     load(root: _Root): Promise<_Rule[]>;
 }
 
-type _Plugin = (root: _Root, context: _Context) => Promise<void> | null;
+type _Plugin = (root: _Root, context: _PluginContext) => Promise<void> | null;
+
+declare module "stylis-pack" {
+    export type Rule = _Rule;
+    export type Root = _Root;
+    export type Plugin = _Plugin;
+    export type PluginContext = _PluginContext;
+}
 
 declare module "stylis-pack/load" {
-    export type Root = _Root;
-    export type Context = _Context;
-    export type Plugin = _Plugin;
     export function load(
-        root: Root,
-        plugins: Plugin[],
+        root: _Root,
+        plugins: _Plugin[],
         parallel?: object
-    ): Promise<Root>;
+    ): Promise<_Root>;
 }
 
 declare module "stylis-pack/plugin-import" {
     export interface Options {
         readFile?: (src: string) => Promise<string>;
     }
-    export function pluginImport(options: Options): _Plugin;
+    export function pluginImport(options?: Options): _Plugin;
 }
 
 declare module "stylis-pack/utils" {
@@ -61,7 +65,6 @@ declare module "stylis-pack/utils" {
     export function insertAfter(rule: _Rule, rules: _Rule | _Rule[]): boolean;
     export function append(rule: _Rule, rules: _Rule | _Rule[]): boolean;
     export function prepend(rule: _Rule, rules: _Rule | _Rule[]): boolean;
-
     export function walkAtRule(
         rules: _Rule[],
         type: string,
