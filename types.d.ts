@@ -1,21 +1,43 @@
-import { Element } from "stylis";
-import { Context } from "@uppercod/imported";
+interface _Tree {
+    tree: Object<string, any>;
+    has(str: string): boolean;
+    get(str: string): Value;
+    add(src: string): void;
+    graph(src: string): object;
+    addChild(src: string, childSrc: string): void;
+    getRoots(src: string, childSrc: string): void;
+    remove(src: string): void;
+}
 
-type _Plugin = (root: _Root, context: _Context) => Promise<void> | null;
-
-interface _Context {
-    load(root: _Root): Promise<Element[]>;
+interface _Rule {
+    parent?: _Rule;
+    children?: _Rule[];
+    root: _Rule;
+    type: string;
+    props: string[];
+    value: string;
+    length: number;
+    return: string;
+    line?: number;
+    column?: number;
 }
 
 interface _Root {
     file: string;
     code: string;
-    css?: Element[];
+    css?: _Rule[];
     rootFile?: string;
-    tree?: Context;
+    tree?: _Tree;
 }
 
-declare module "stylis-pack" {
+interface _Context {
+    addChild(src: string): void;
+    load(root: _Root): Promise<_Rule[]>;
+}
+
+type _Plugin = (root: _Root, context: _Context) => Promise<void> | null;
+
+declare module "stylis-pack/load" {
     export type Root = _Root;
     export type Context = _Context;
     export type Plugin = _Plugin;
@@ -34,28 +56,19 @@ declare module "stylis-pack/plugin-import" {
 }
 
 declare module "stylis-pack/utils" {
-    export function replaceWith(
-        rule: Element,
-        rules: Element | Element[]
-    ): boolean;
-    export function insertBefore(
-        rule: Element,
-        rules: Element | Element[]
-    ): boolean;
-    export function insertAfter(
-        rule: Element,
-        rules: Element | Element[]
-    ): boolean;
-    export function append(rule: Element, rules: Element | Element[]): boolean;
-    export function prepend(rule: Element, rules: Element | Element[]): boolean;
+    export function replaceWith(rule: _Rule, rules: _Rule | _Rule[]): boolean;
+    export function insertBefore(rule: _Rule, rules: _Rule | _Rule[]): boolean;
+    export function insertAfter(rule: _Rule, rules: _Rule | _Rule[]): boolean;
+    export function append(rule: _Rule, rules: _Rule | _Rule[]): boolean;
+    export function prepend(rule: _Rule, rules: _Rule | _Rule[]): boolean;
 
     export function walkAtRule(
-        rules: Element[],
+        rules: _Rule[],
         type: string,
         callback: (root: _Root) => Promise<void>
     );
     export function walk(
-        rules: Element[],
+        rules: _Rule[],
         callback: (root: _Root) => Promise<void>
     );
 }

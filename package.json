@@ -1,6 +1,6 @@
 {
     "name": "stylis-pack",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "A layer add to Stylis for asynchronous processing",
     "main": "./cjs/load.js",
     "module": "./esm/load.js",
